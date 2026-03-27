@@ -98,3 +98,90 @@ function isObject(value:unknown): value is Record<string,unknown> {
   }
 
 
+  function isObject(value: unknown): value is Record<string, unknown> {
+    // 你来写
+    return value !== null && typeof value === 'object';
+  }
+
+  function hasName(value: unknown): value is Record<string, unknown> & { name: string } {
+    // 你来写
+    return isObject(value)&& 'name' in value&& typeof value.name === 'string';
+  }
+
+
+  type ErrorResponse = {
+    success: false
+    message: string
+    code: number
+  }
+  
+  function isErrorResponse(value: unknown): value is ErrorResponse {
+    // 你来写
+    return isObject(value) && 
+    typeof value.success === 'boolean'&&
+    value.success === false && 
+    'message' in value && typeof value.message === 'string'&&
+    'code' in value && typeof value.code === 'number'
+  }
+
+  type SuccessResponse<T> = {
+    success: true;
+    data: T;
+  };
+  
+  type User = {
+    name: string;
+    age: number;
+  };
+  
+  function isUser(value: unknown): value is User {
+    // 你来写
+    return isObject(value) && 
+    'name' in value &&
+    typeof value.name === 'string'&&
+    'age' in value &&
+    typeof value.age === 'number'
+  }
+  
+  function isSuccessResponseUser(value: unknown): value is SuccessResponse<User> {
+    // 你来写
+    if(!isObject(value))return false;
+    if('success' in value && value.success !== true) return false;
+    return 'data' in value && isUser(value.data);
+  }
+
+  type ApiResponse<T> =
+  | { success: true; data: T }
+  | { success: false; message: string; code: number };
+
+  function isApiResponseUser(value:unknown): value is ApiResponse<User> {
+    if(!isObject(value))return false;
+      if(!('success' in value)) return false;
+      if(value.success === true) {
+        if (!('data' in value)) return false;
+        return isUser(value.data);
+    }
+    if(value.success === false) {
+      if (!('message' in value)) return false;
+      if (typeof value.message !== 'string') return false;
+      if (!('code' in value)) return false;
+      if (typeof value.code !== 'number') return false;
+    } 
+    return false;
+  }
+
+
+  function parseAndRenderUser(value: unknown): string {
+    // 你来写
+    if(!isApiResponseUser(value)) return "非法响应";
+    switch (value.success) {
+      case true:
+        return `响应成功:${JSON.stringify(value.data)}`;
+      case false:
+        return `响应失败:${value.code},${value.message}`;
+      default: {
+        const exhaustivecheck:never = value;
+        return exhaustivecheck
+      }
+    }
+  }
