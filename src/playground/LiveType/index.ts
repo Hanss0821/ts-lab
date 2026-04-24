@@ -46,7 +46,8 @@ type GiftTier =   keyof typeof GIFT_TIERS  // 'bronze' | 'silver' | 'gold' | 'di
 type GiftPrice =  typeof GIFT_TIERS[GiftTier]   // 10 | 50 | 200 | 1000
 
 
-// 3a. API 响应通用结构（泛型）
+{
+    // 3a. API 响应通用结构（泛型）
 interface ApiResponse<T> { 
     code: number;
     msg: string;
@@ -68,6 +69,7 @@ function pluck<T, K extends keyof T>(arr: T[], key: K): T[K][] {
 // const nicknames = pluck(userList, 'nickname')  // 应推断为 string[]
 // const prices = pluck(giftList, 'price')        // 应推断为 number[]
 
+}
 // 已有完整的活动类型：
 interface Activity {
     id: number
