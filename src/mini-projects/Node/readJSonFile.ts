@@ -56,3 +56,6 @@ function parseFilePath(filePath: string) {
   // 调用示例：
   // parseFilePath('src/components/Button.tsx')
   // → { dir: 'src/components', filename: 'Button', ext: '.tsx', isTypeScript: true }
+
+
+  

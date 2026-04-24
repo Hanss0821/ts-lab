@@ -21,7 +21,7 @@ interface UserBase {
 // 1d. 礼物 Interface
 // 必填：giftId(number), name(string), price(number), animationType('static' | 'dynamic')
 // 可选：duration(number) —— 只有 dynamic 类型才有意义，但类型层面先标可选
-interface Gift { 
+export interface Gift { 
     giftId: number;
     name: string;
     price: number;
@@ -32,7 +32,7 @@ interface Gift {
  // 2a. 用 as const 定义礼物价格档位映射，key 是档位名，value 是金币数
 // 档位：'bronze'=10, 'silver'=50, 'gold'=200, 'diamond'=1000
 // as const 能更精确的收窄为字面量类型
-const GIFT_TIERS = {
+export const GIFT_TIERS = {
     'bronze': 10, 
     'silver': 50, 
     'gold': 200, 
@@ -41,7 +41,7 @@ const GIFT_TIERS = {
 
 // 2b. 从 GIFT_TIERS 派生出两个类型，不手写字面量
 // GIFT_TIERS是值，ts中 typeof可以获得类型
-type GiftTier =   keyof typeof GIFT_TIERS  // 'bronze' | 'silver' | 'gold' | 'diamond'
+export type GiftTier =   keyof typeof GIFT_TIERS  // 'bronze' | 'silver' | 'gold' | 'diamond'
 // TS 的 T[K] 是编译时对类型集合的全量查询，K 是联合类型时自动分发，结果是所有可能返回值类型的并集。
 type GiftPrice =  typeof GIFT_TIERS[GiftTier]   // 10 | 50 | 200 | 1000
 
