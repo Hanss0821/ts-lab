@@ -101,3 +101,35 @@ function run(raw: string) {
   run(goodSingle);
   run(goodList);
   run(bad);
+
+
+  // 枚举编译产物
+  enum Items {
+    FOO=10,
+    Bar=11,
+    Baz=12
+  }
+
+  {
+    let items:Record<string , unknown> = {};
+    (function(items){
+      items[items['Foo'] = 10] = 'FOO';
+      items[items['Bar'] = 20] = 'Bar';
+      items[items['Baz'] = 10] = 'Baz';
+    }(items || (items = {})))
+  }
+
+
+const enum Const { Foo, Bar }
+Const.Foo
+Object.entries(Const) // 常量枚举，不生成实际枚举产物，不能被迭代
+
+
+// 返回类型和某个值强绑定则用重载 优先泛型
+
+const bridge = window as unknown as {
+  openWebPreview: (params: string) => void
+  toHomePage: (uid: number) => void
+}
+
+bridge.openWebPreview(JSON.stringify(params))
