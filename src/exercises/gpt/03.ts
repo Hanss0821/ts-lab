@@ -80,9 +80,46 @@
     total: number;
   };
 
-  function request<T>(data: object): Promise<ApiResponse<T>> {
-    return fetch(data);
+  async function request<T>(url: string): Promise<ApiResponse<T>> {
+    const res = await fetch(url);
+    return res.json();
   }
 
-  const res = await request<Pagination<Activity>>();
+  const res = request<Pagination<Activity>>("/api/activity/list").then(
+    (res) => {
+      res.data.list[0].title;
+    },
+  );
+}
+
+{
+  type FormField<T, K extends keyof T> = {
+    key: K;
+    value: T[K];
+  };
+
+  interface User {
+    name: string;
+    age: number;
+  }
+
+  type NameField = FormField<User, "name">;
+
+  type AgeField = FormField<User, "age">;
+}
+
+{
+  type FormFields<T> = {
+    [K in keyof T]: {
+      key: K;
+      value: T[K];
+    };
+  };
+
+  interface User {
+    name: string;
+    age: number;
+  }
+
+  type UserFormFields = FormFields<User>;
 }
