@@ -122,4 +122,9 @@
   }
 
   type UserFormFields = FormFields<User>;
+
+  type Pick<T, K extends keyof T> = {
+    [P in K]: T[P];
+  };
+  type age = Pick<User, "age">;
 }
