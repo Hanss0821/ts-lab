@@ -11,5 +11,13 @@
     "types": ["node"],
      "outDir": "dist"
   },
-  "include": ["src"]
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.vue",
+    "packages/**/*.ts",
+    "packages/**/*.d.ts",
+    "apps/**/*.ts",
+    "apps/**/*.d.ts",
+    "apps/**/*.vue"]
 }
