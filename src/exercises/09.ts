@@ -54,3 +54,33 @@ function makeReadonlyForm(
   // 实现留空
   return config as Record<string, Readonly<FormField>>;
 }
+
+{
+  let a: any = "";
+  const b = a; // 交叉类型 &any 都是any类型
+
+  type IsAny<T> = 0 extends 1 & T ? true : false;
+
+  // infer做结构类型判断
+  type IsUnknown<T> = unknown extends T
+    ? IsAny<T> extends true
+      ? false
+      : true
+    : false;
+
+  type Swap<T extends any[]> = T extends [infer A, infer B] ? [B, A] : T;
+
+  type ReverseKeyValue<T extends Record<string, unknown>> =
+    T extends Record<infer K, infer V> ? Record<V & string, K> : never;
+}
+type GetRetuenType<T> = T extends (...args: any[]) => infer R ? R : never;
+
+type GetString = (arg: string) => string;
+
+const arr2: GetRetuenType<GetString> = "10";
+
+{
+  // type ArrayItem<T> = T extends [infer R,infer K] ? [R,K] : never
+  type ArrayItem<T> = T extends Array<infer item> ? item : never;
+  type C = ArrayItem<[string, number]>;
+}
