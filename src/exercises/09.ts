@@ -84,3 +84,14 @@ const arr2: GetRetuenType<GetString> = "10";
   type ArrayItem<T> = T extends Array<infer item> ? item : never;
   type C = ArrayItem<[string, number]>;
 }
+
+{
+  type DeepUnwrapPromise<T> =
+    T extends Promise<infer R> ? DeepUnwrapPromise<R> : T;
+
+  type D = DeepUnwrapPromise<Promise<Promise<boolean>>>;
+
+  // DeepUnwrapPromise<Promise<Promise<boolean>>> <Promise<Promise<boolean>>> extends Promise<infer R>
+  // DeepUnwrapPromise<Promise<boolean>>>   Promise<boolean>> extends Promise<infer R>
+  // DeepUnwrapPromise<boolean>
+}
