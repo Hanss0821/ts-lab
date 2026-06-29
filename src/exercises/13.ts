@@ -100,3 +100,50 @@ type MarkPropsAsMutable<
       : never
     : T;
 }
+
+{
+  interface UserProfile {
+    id: number;
+    name: string;
+    age: number;
+    email: string;
+    avatar: string;
+  }
+  /*
+  要求实现 PickByValueType<T, ValueType>
+  ——从 T 中取出所有值类型匹配 ValueType 的字段。
+  **/
+
+  type PickByValueType<T extends object, ValueType> = Pick<
+    T,
+    {
+      [P in keyof T]: T[P] extends ValueType ? P : never;
+    }[keyof T]
+  >;
+
+  type str = PickByValueType<UserProfile, string>;
+}
+
+{
+  interface Config {
+    host: string;
+    port: number;
+    debug: boolean;
+    timeout: number;
+    name: string;
+  }
+
+  type OmitByValueType<T extends object, ValueType> = Omit<
+    T,
+    {
+      [P in keyof T]: T[P] extends ValueType ? P : never;
+    }[keyof T]
+  >;
+  type Result = OmitByValueType<Config, number>;
+}
+
+{
+  type DeepReadonly<T extends object> = {
+    readonly [P in keyof T]: T[P] extends object ? DeepReadonly<T[P]> : T[P];
+  };
+}
