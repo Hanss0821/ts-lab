@@ -112,7 +112,8 @@ type ReverseName<Str extends string> =
     List extends Array<string | number>,
     Delimiter extends string,
   > = List extends [string | number, ...infer Rest]
-    ? `${List[0]}${Delimiter}${Join<Rest, Delimiter>}`
+    ? //@ts-expect-error
+      `${List[0]}${Delimiter}${Join<Rest, Delimiter>}`
     : string;
 }
 // Join<['lin', 'bu', 'du'], '-'>
