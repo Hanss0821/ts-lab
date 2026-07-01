@@ -136,4 +136,42 @@ type ReverseName<Str extends string> =
         : string;
 }
 
-//
+{
+  type SnakeCase2CamelCase<S extends string> =
+    S extends `${infer Head}${"_"}${infer Rest}`
+      ? `${Head}${SnakeCase2CamelCase<Capitalize<Rest>>}`
+      : S;
+
+  // foo_bar_baz Head foo _ Rest bar_baz foo(SnakeCase2CamelCase<Bar_baz>)
+  // Bar_baz Head Bar _ Rest baz  Bar(foo(SnakeCase2CamelCase<Baz>))
+  // Baz
+  // fooBarBaz
+}
+
+{
+  type DelimiterCase2CamelCaseAuto<S extends string> =
+    S extends `${infer Head}${infer Delim}${infer Rest}`
+      ? `${Head}${DelimiterCase2CamelCaseAuto<Capitalize<Rest>>}`
+      : S;
+
+  //  foo_bar-baz  foo _bar-baz "" f o o_bar-baz 在没有锚点的情况下，应尽量短，那么单个字符就是最短
+  //  foo_bar-baz f o o_bar-baz  f <O_bar-baz>
+  //  O_bar-baz O _ bar-baz  O<Bar-baz>
+  //  Bar-baz B a r-baz B<R-baz>
+  //  R-baz R - baz R<Baz>
+  //  Baz B a z B<z>
+  // z
+  // fOBRBz
+}
+
+{
+  type DelimiterCase2CamelCaseAuto<S extends string> =
+    S extends `${infer Head}${"_" | "-" | " "}${infer Rest}`
+      ? `${Head}${DelimiterCase2CamelCaseAuto<Capitalize<Rest>>}`
+      : S;
+
+  // foo__bar foo _bar foo <_bar>
+  // _bar "" bar  ""<Bar>
+  // Bar Bar
+  // fooBar
+}
